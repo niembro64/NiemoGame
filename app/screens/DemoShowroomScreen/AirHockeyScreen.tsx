@@ -9,36 +9,34 @@ import { Finger } from "../../gameEngine/renderers"
 import { AirHockeyProps } from "../../navigators/DemoNavigator"
 
 import { MoveFingerPosition } from "../../gameEngine/systems"
-export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
+import { ScreenWidth } from "react-native-elements/dist/helpers"
+export const fingerKeys = ["f1", "f2", "f3", "f4", "f5"]
+// export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
 
 export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
+  const numFingers = 5
+  const screenDivisions = numFingers + 1
+  const divisionSize = ScreenWidth / screenDivisions
+
   return (
     <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContainer}>
-      <View
+      <GameEngine
         style={{
-          width: "100%",
-          height: "100%",
-          backgroundColor: colors.background,
+          flex: 1,
+          backgroundColor: "#FFF",
+        }}
+        systems={[MoveFingerPosition]}
+        entities={{
+          f1: { position: [divisionSize * 1, 300], renderer: <Finger /> },
+          f2: { position: [divisionSize * 2, 300], renderer: <Finger /> },
+          f3: { position: [divisionSize * 3, 300], renderer: <Finger /> },
+          f4: { position: [divisionSize * 4, 300], renderer: <Finger /> },
+          f5: { position: [divisionSize * 5, 300], renderer: <Finger /> },
+          // f6: { position: [340, 300], renderer: <Finger /> },
         }}
       >
-        <GameEngine
-          style={{
-            flex: 1,
-            backgroundColor: "#FFF",
-          }}
-          systems={[MoveFingerPosition]}
-          entities={{
-            f1: { position: [40, 200], renderer: <Finger /> },
-            f2: { position: [100, 200], renderer: <Finger /> },
-            f3: { position: [160, 200], renderer: <Finger /> },
-            f4: { position: [220, 200], renderer: <Finger /> },
-            f5: { position: [280, 200], renderer: <Finger /> },
-            f6: { position: [340, 200], renderer: <Finger /> },
-          }}
-        >
-          <StatusBar hidden={true} />
-        </GameEngine>
-      </View>
+        <StatusBar hidden={true} />
+      </GameEngine>
     </Screen>
   )
 }
