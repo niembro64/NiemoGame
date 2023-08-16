@@ -10,8 +10,8 @@ import { AirHockeyProps } from "../../navigators/DemoNavigator"
 
 import { ScreenWidth } from "react-native-elements/dist/helpers"
 import { MoveFingerOffset, MoveFingerPosition } from "../../gameEngine/systems"
-export const fingerKeys = ["F0", "f1", "f2", "f3", "f4"]
-// export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
+// export const fingerKeys = ["F0", "f1", "f2", "f3", "f4"]
+export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
 
 export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
   const numFingers = 5
@@ -32,7 +32,8 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
           f2: { position: [divisionSize * 4, 300], renderer: <Finger /> },
           f3: { position: [divisionSize * 5, 300], renderer: <Finger /> },
           f4: { position: [divisionSize * 6, 300], renderer: <Finger /> },
-          // f6: { position: [340, 300], renderer: <Finger /> },
+          f5: { position: [divisionSize * 7, 300], renderer: <Finger /> },
+          f6: { position: [divisionSize * 8, 300], renderer: <Finger /> },
         }}
       >
         <StatusBar hidden={true} />
