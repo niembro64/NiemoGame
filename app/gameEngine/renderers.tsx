@@ -4,7 +4,7 @@ import { StyleSheet, View } from "react-native"
 
 const RADIUS = 20
 
-class Finger extends PureComponent {
+export class Finger extends PureComponent {
   render() {
     // @ts-ignore
     const x = this.props.position[0] - RADIUS / 2
@@ -25,5 +25,3 @@ const styles = StyleSheet.create({
     width: RADIUS * 2,
   },
 })
-
-export { Finger }

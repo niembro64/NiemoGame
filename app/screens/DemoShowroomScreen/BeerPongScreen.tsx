@@ -9,6 +9,8 @@ import { Finger } from "../../gameEngine/renderers"
 import { MoveFingerPosition } from "../../gameEngine/systems"
 import { BeerPongProps } from "../../navigators/DemoNavigator"
 
+export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
+
 export const BeerPongScreen: FC<BeerPongProps<"BeerPong">> = (_props) => {
   return (
     <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContainer}>
@@ -31,6 +33,7 @@ export const BeerPongScreen: FC<BeerPongProps<"BeerPong">> = (_props) => {
             f3: { position: [160, 200], renderer: <Finger /> },
             f4: { position: [220, 200], renderer: <Finger /> },
             f5: { position: [280, 200], renderer: <Finger /> },
+            f6: { position: [340, 200], renderer: <Finger /> },
           }}
         >
           <StatusBar hidden={true} />
