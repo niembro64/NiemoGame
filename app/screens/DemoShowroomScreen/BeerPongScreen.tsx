@@ -6,7 +6,7 @@ import { StatusBar, View, ViewStyle } from "react-native"
 import { GameEngine } from "react-native-game-engine"
 import { Screen } from "../../components"
 import { Finger } from "../../gameEngine/renderers"
-import { MoveFinger } from "../../gameEngine/systems"
+import { MoveFingerPosition } from "../../gameEngine/systems"
 import { BeerPongProps } from "../../navigators/DemoNavigator"
 
 export const BeerPongScreen: FC<BeerPongProps<"BeerPong">> = (_props) => {
@@ -24,7 +24,7 @@ export const BeerPongScreen: FC<BeerPongProps<"BeerPong">> = (_props) => {
             flex: 1,
             backgroundColor: "#FFF",
           }}
-          systems={[MoveFinger]}
+          systems={[MoveFingerPosition]}
           entities={{
             1: { position: [40, 200], renderer: <Finger /> },
             2: { position: [100, 200], renderer: <Finger /> },

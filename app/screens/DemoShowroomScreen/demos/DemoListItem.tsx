@@ -4,7 +4,7 @@ import { TextStyle, View, ViewStyle } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
 import { Icon, ListItem, Text } from "../../../components"
 import { colors, spacing } from "../../../theme"
-import { Demo } from "../BeerPong"
+import { Demo } from "../BeerPongScreen"
 import { DemoDivider } from "../DemoDivider"
 import { DemoUseCase } from "../DemoUseCase"
 

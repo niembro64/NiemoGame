@@ -1,15 +1,27 @@
 /* eslint-disable prefer-const */
-const MoveFinger = (entities, { touches }) => {
+
+export const MoveFingerOffset = (entities, { touches }) => {
   touches
-    .filter((t) => t.type === 'move')
+    .filter((t) => t.type === "move" || t.type === "start")
     .forEach((t) => {
-      let finger = entities[t.id];
+      let finger = entities[t.id]
       if (finger && finger.position) {
-        finger.position = [finger.position[0] + t.delta.pageX, finger.position[1] + t.delta.pageY];
+        finger.position = [finger.position[0] + t.delta.pageX, finger.position[1] + t.delta.pageY]
       }
-    });
+    })
 
-  return entities;
-};
+  return entities
+}
 
-export { MoveFinger };
+export const MoveFingerPosition = (entities, { touches }) => {
+  touches
+    .filter((t) => t.type === "move" || t.type === "start")
+    .forEach((t) => {
+      let finger = entities[t.id]
+      if (finger && finger.position) {
+        finger.position = [t.event.pageX, t.event.pageY]
+      }
+    })
+
+  return entities
+}
