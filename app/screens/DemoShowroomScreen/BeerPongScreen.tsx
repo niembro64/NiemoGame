@@ -5,10 +5,10 @@ import React, { FC } from "react"
 import { StatusBar, View, ViewStyle } from "react-native"
 import { GameEngine } from "react-native-game-engine"
 import { Screen } from "../../components"
-import { Finger } from "../../gameEngine/renderers"
-import { MoveFingerPosition } from "../../gameEngine/systems"
+import { Finger, Puck } from "../../gameEngine/renderers"
 import { BeerPongProps } from "../../navigators/DemoNavigator"
 
+import { MoveFingerAndPuck, MoveFingerPosition } from "../../gameEngine/systems"
 export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
 
 export const BeerPongScreen: FC<BeerPongProps<"BeerPong">> = (_props) => {
@@ -28,7 +28,7 @@ export const BeerPongScreen: FC<BeerPongProps<"BeerPong">> = (_props) => {
           }}
           systems={[MoveFingerPosition]}
           entities={{
-            f1: { position: [40, 200], renderer: <Finger /> },
+            puck: { position: [160, 300], velocity: { x: 0, y: 0 }, renderer: <Puck /> },
             f2: { position: [100, 200], renderer: <Finger /> },
             f3: { position: [160, 200], renderer: <Finger /> },
             f4: { position: [220, 200], renderer: <Finger /> },
