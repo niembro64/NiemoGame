@@ -5,14 +5,14 @@ import { colors } from "app/theme"
 import React, { FC } from "react"
 import { StatusBar, View, ViewStyle } from "react-native"
 import { GameEngine } from "react-native-game-engine"
-import { Screen } from "../../components"
-import { Finger } from "../../gameEngine/renderers"
-import { GameProps } from "../../navigators/DemoNavigator"
+import { Screen } from "../components"
+import { Finger } from "../gameEngine/renderers"
+import { GameProps } from "../navigators/DemoNavigator"
 
-import { MoveFingerOffset, MoveFingerPosition } from "../../gameEngine/systems"
+import { MoveFingerOffset, MoveFingerPosition } from "../gameEngine/systems"
 export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
 
-export const AirHockeyScreen: FC<GameProps<"AirHockey">> = (_props) => {
+export const BeerPongScreen: FC<GameProps<"BeerPong">> = (_props) => {
   return (
     <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContainer}>
       <View
@@ -27,7 +27,7 @@ export const AirHockeyScreen: FC<GameProps<"AirHockey">> = (_props) => {
             flex: 1,
             backgroundColor: "#FFF",
           }}
-          systems={[MoveFingerOffset]}
+          systems={[MoveFingerPosition]}
           entities={{
             f1: { position: [40, 200], renderer: <Finger /> },
             f2: { position: [100, 200], renderer: <Finger /> },

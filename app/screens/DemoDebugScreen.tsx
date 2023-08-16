@@ -2,7 +2,7 @@ import React, { FC } from "react"
 import * as Application from "expo-application"
 import { Linking, Platform, TextStyle, View, ViewStyle } from "react-native"
 import { Button, ListItem, Screen, Text } from "../components"
-import { AirHockeyProps } from "../navigators/DemoNavigator"
+import { GameProps } from "../navigators/DemoNavigator"
 import { colors, spacing } from "../theme"
 import { isRTL } from "../i18n"
 import { useStores } from "../models"
@@ -11,7 +11,7 @@ function openLinkInBrowser(url: string) {
   Linking.canOpenURL(url).then((canOpen) => canOpen && Linking.openURL(url))
 }
 
-export const DemoDebugScreen: FC<AirHockeyProps<"DemoDebug">> = function DemoDebugScreen(_props) {
+export const DemoDebugScreen: FC<GameProps<"DemoDebug">> = function DemoDebugScreen(_props) {
   const {
     authenticationStore: { logout },
   } = useStores()

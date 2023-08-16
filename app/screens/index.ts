@@ -1,9 +1,11 @@
 export * from "./WelcomeScreen"
 // @demo remove-block-start
 export * from "./LoginScreen"
-export * from "./DemoCommunityScreen"
+export * from "./BeerPongScreen"
 export * from "./DemoDebugScreen"
-export * from "./DemoShowroomScreen/AirHockeyScreen"
 // @demo remove-block-end
 export * from "./ErrorScreen/ErrorBoundary"
+// @demo remove-block-end
+// @ts-ignore
+export * from "./DemoShowroomScreen/AirHockeyScreen"
 // export other screens here
