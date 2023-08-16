@@ -2,7 +2,7 @@
 import React from "react"
 import { AutoImage, Button, Card, Icon } from "../../../components"
 import { colors, spacing } from "../../../theme"
-import { Demo } from "../BeerPongScreen"
+import { Demo } from "../AirHockeyScreen"
 import { DemoDivider } from "../DemoDivider"
 import { DemoUseCase } from "../DemoUseCase"
 

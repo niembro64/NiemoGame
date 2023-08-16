@@ -3,7 +3,7 @@ export * from "./WelcomeScreen"
 export * from "./LoginScreen"
 export * from "./DemoCommunityScreen"
 export * from "./DemoDebugScreen"
-export * from "./DemoShowroomScreen/BeerPongScreen"
+export * from "./DemoShowroomScreen/AirHockeyScreen"
 // @demo remove-block-end
 export * from "./ErrorScreen/ErrorBoundary"
 // export other screens here

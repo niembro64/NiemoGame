@@ -5,19 +5,19 @@ import { TextStyle, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Icon } from "../components"
 import { translate } from "../i18n"
-import { DemoCommunityScreen, BeerPongScreen, DemoDebugScreen } from "../screens"
+import { DemoCommunityScreen, AirHockeyScreen, DemoDebugScreen } from "../screens"
 import { DemoPodcastListScreen } from "../screens/DemoPodcastListScreen"
 import { colors, spacing, typography } from "../theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 
 export type GameTabsParamList = {
   DemoCommunity: undefined
-  BeerPong: { queryIndex?: string; itemIndex?: string }
+  AirHockey: { queryIndex?: string; itemIndex?: string }
   DemoDebug: undefined
   DemoPodcastList: undefined
 }
 
-export type BeerPongProps<T extends keyof GameTabsParamList> = CompositeScreenProps<
+export type AirHockeyProps<T extends keyof GameTabsParamList> = CompositeScreenProps<
   BottomTabScreenProps<GameTabsParamList, T>,
   AppStackScreenProps<keyof AppStackParamList>
 >
@@ -40,10 +40,10 @@ export function DemoNavigator() {
       }}
     >
       <Tab.Screen
-        name="BeerPong"
-        component={BeerPongScreen}
+        name="AirHockey"
+        component={AirHockeyScreen}
         options={{
-          tabBarLabel: "Beer Pong",
+          tabBarLabel: "Air Hockey",
           tabBarIcon: ({ focused }) => (
             <Icon icon="components" color={focused && colors.tint} size={30} />
           ),

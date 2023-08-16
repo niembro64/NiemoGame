@@ -25,7 +25,7 @@ import { Button, Card, EmptyState, Icon, Screen, Text, Toggle } from "../compone
 import { isRTL, translate } from "../i18n"
 import { useStores } from "../models"
 import { Episode } from "../models/Episode"
-import { BeerPongProps } from "../navigators/DemoNavigator"
+import { AirHockeyProps } from "../navigators/DemoNavigator"
 import { colors, spacing } from "../theme"
 import { delay } from "../utils/delay"
 import { openLinkInBrowser } from "../utils/openLinkInBrowser"
@@ -37,7 +37,7 @@ const rnrImage2 = require("../../assets/images/rnr-image-2.png")
 const rnrImage3 = require("../../assets/images/rnr-image-3.png")
 const rnrImages = [rnrImage1, rnrImage2, rnrImage3]
 
-export const DemoPodcastListScreen: FC<BeerPongProps<"DemoPodcastList">> = observer(
+export const DemoPodcastListScreen: FC<AirHockeyProps<"DemoPodcastList">> = observer(
   function DemoPodcastListScreen(_props) {
     const { episodeStore } = useStores()
 
