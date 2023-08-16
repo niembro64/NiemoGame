@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-color-literals */
 /* eslint-disable react-native/no-inline-styles */
 import React, { FC } from "react"
@@ -8,8 +9,8 @@ import { Finger } from "../../gameEngine/renderers"
 import { AirHockeyProps } from "../../navigators/DemoNavigator"
 
 import { ScreenWidth } from "react-native-elements/dist/helpers"
-import { MoveFingerOffset } from "../../gameEngine/systems"
-export const fingerKeys = ["f1", "f2", "f3", "f4", "f5"]
+import { MoveFingerOffset, MoveFingerPosition } from "../../gameEngine/systems"
+export const fingerKeys = ["F0", "f1", "f2", "f3", "f4"]
 // export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
 
 export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
@@ -26,11 +27,11 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
         }}
         systems={[MoveFingerOffset]}
         entities={{
-          f1: { position: [divisionSize * 1, 300], renderer: <Finger /> },
-          f2: { position: [divisionSize * 2, 300], renderer: <Finger /> },
-          f3: { position: [divisionSize * 3, 300], renderer: <Finger /> },
-          f4: { position: [divisionSize * 4, 300], renderer: <Finger /> },
-          f5: { position: [divisionSize * 5, 300], renderer: <Finger /> },
+          f0: { position: [divisionSize * 2, 300], renderer: <Finger /> },
+          f1: { position: [divisionSize * 3, 300], renderer: <Finger /> },
+          f2: { position: [divisionSize * 4, 300], renderer: <Finger /> },
+          f3: { position: [divisionSize * 5, 300], renderer: <Finger /> },
+          f4: { position: [divisionSize * 6, 300], renderer: <Finger /> },
           // f6: { position: [340, 300], renderer: <Finger /> },
         }}
       >
