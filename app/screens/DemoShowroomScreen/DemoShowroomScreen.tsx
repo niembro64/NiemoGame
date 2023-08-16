@@ -1,10 +1,16 @@
+/* eslint-disable react-native/no-color-literals */
+/* eslint-disable react-native/no-inline-styles */
 import { RouteProp, useRoute } from "@react-navigation/native"
 import React, { FC, useEffect, useRef, useState } from "react"
-import { SectionList, ViewStyle } from "react-native"
+import { SectionList, StatusBar, View, ViewStyle } from "react-native"
 import { DrawerLayout } from "react-native-gesture-handler"
 import { Screen } from "../../components"
 import { DemoTabParamList, DemoTabScreenProps } from "../../navigators/DemoNavigator"
 import * as Demos from "./demos"
+import { colors } from "app/theme"
+import { GameEngine } from "react-native-game-engine"
+import { MoveFinger } from "../../gameEngine/systems"
+import { Finger } from "../../gameEngine/renderers"
 
 const slugify = (str) =>
   str
@@ -70,11 +76,32 @@ export const DemoShowroomScreen: FC<DemoTabScreenProps<"DemoShowroom">> =
     }, [])
 
     return (
-      <Screen
-        preset="fixed"
-        safeAreaEdges={["top"]}
-        contentContainerStyle={$screenContainer}
-      ></Screen>
+      <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContainer}>
+        <View
+          style={{
+            width: "100%",
+            height: "100%",
+            backgroundColor: colors.background,
+          }}
+        >
+          <GameEngine
+            style={{
+              flex: 1,
+              backgroundColor: "#FFF",
+            }}
+            systems={[MoveFinger]}
+            entities={{
+              1: { position: [40, 200], renderer: <Finger /> },
+              2: { position: [100, 200], renderer: <Finger /> },
+              3: { position: [160, 200], renderer: <Finger /> },
+              4: { position: [220, 200], renderer: <Finger /> },
+              5: { position: [280, 200], renderer: <Finger /> },
+            }}
+          >
+            <StatusBar hidden={true} />
+          </GameEngine>
+        </View>
+      </Screen>
     )
   }
 
