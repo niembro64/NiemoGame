@@ -48,7 +48,7 @@ export function DemoNavigator() {
         name="DemoShowroom"
         component={DemoShowroomScreen}
         options={{
-          tabBarLabel: translate("demoNavigator.componentsTab"),
+          tabBarLabel: "Beer Pong",
           tabBarIcon: ({ focused }) => (
             <Icon icon="components" color={focused && colors.tint} size={30} />
           ),
