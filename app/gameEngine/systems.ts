@@ -7,7 +7,7 @@ export const MoveFingerOffset = (entities: { [x: string]: any }, { touches }: an
   touches
     .filter((t: { type: string }) => t.type === "move" || t.type === "start")
     .forEach((t: { id: string | number; delta: { pageX: any; pageY: any } }) => {
-      const fingerKey = fingerKeys[t.id] // Get the corresponding entity key
+      const fingerKey = fingerKeys[t.id]
       const finger = entities[fingerKey]
       if (finger && finger.position) {
         finger.position = [finger.position[0] + t.delta.pageX, finger.position[1] + t.delta.pageY]

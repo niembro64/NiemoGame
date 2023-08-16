@@ -5,10 +5,10 @@ import React, { FC } from "react"
 import { StatusBar, View, ViewStyle } from "react-native"
 import { GameEngine } from "react-native-game-engine"
 import { Screen } from "../../components"
-import { Finger, Puck } from "../../gameEngine/renderers"
+import { Finger } from "../../gameEngine/renderers"
 import { AirHockeyProps } from "../../navigators/DemoNavigator"
 
-import { , MoveFingerPosition } from "../../gameEngine/systems"
+import { MoveFingerPosition } from "../../gameEngine/systems"
 export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
 
 export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
@@ -28,7 +28,6 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
           }}
           systems={[MoveFingerPosition]}
           entities={{
-            puck: { position: [160, 300], velocity: { x: 100, y: 100 }, renderer: <Puck /> },
             f1: { position: [40, 200], renderer: <Finger /> },
             f2: { position: [100, 200], renderer: <Finger /> },
             f3: { position: [160, 200], renderer: <Finger /> },
