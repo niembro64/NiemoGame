@@ -6,12 +6,12 @@ import { StatusBar, View, ViewStyle } from "react-native"
 import { GameEngine } from "react-native-game-engine"
 import { Screen } from "../../components"
 import { Finger } from "../../gameEngine/renderers"
-import { MoveFingerPosition } from "../../gameEngine/systems"
 import { AirHockeyProps } from "../../navigators/DemoNavigator"
 
+import { MoveFingerPosition } from "../../gameEngine/systems"
 export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
 
-export const BeerPongScreen: FC<AirHockeyProps<"BeerPong">> = (_props) => {
+export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
   return (
     <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContainer}>
       <View

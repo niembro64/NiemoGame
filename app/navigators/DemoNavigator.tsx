@@ -12,12 +12,12 @@ import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 
 export type GameTabsParamList = {
   DemoCommunity: undefined
-  BeerPong: { queryIndex?: string; itemIndex?: string }
+  AirHockey: { queryIndex?: string; itemIndex?: string }
   DemoDebug: undefined
   DemoPodcastList: undefined
 }
 
-export type BeerPongProps<T extends keyof GameTabsParamList> = CompositeScreenProps<
+export type AirHockeyProps<T extends keyof GameTabsParamList> = CompositeScreenProps<
   BottomTabScreenProps<GameTabsParamList, T>,
   AppStackScreenProps<keyof AppStackParamList>
 >
@@ -40,10 +40,10 @@ export function DemoNavigator() {
       }}
     >
       <Tab.Screen
-        name="BeerPong"
+        name="AirHockey"
         component={BeerPongScreen}
         options={{
-          tabBarLabel: "Beer Pong",
+          tabBarLabel: "Air Hockey",
           tabBarIcon: ({ focused }) => (
             <Icon icon="components" color={focused && colors.tint} size={30} />
           ),
