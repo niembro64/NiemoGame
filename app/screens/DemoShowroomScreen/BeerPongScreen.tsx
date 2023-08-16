@@ -26,11 +26,11 @@ export const BeerPongScreen: FC<BeerPongProps<"BeerPong">> = (_props) => {
           }}
           systems={[MoveFingerPosition]}
           entities={{
-            0: { position: [40, 200], renderer: <Finger /> },
-            1: { position: [100, 200], renderer: <Finger /> },
-            2: { position: [160, 200], renderer: <Finger /> },
-            3: { position: [220, 200], renderer: <Finger /> },
-            4: { position: [280, 200], renderer: <Finger /> },
+            f1: { position: [40, 200], renderer: <Finger /> },
+            f2: { position: [100, 200], renderer: <Finger /> },
+            f3: { position: [160, 200], renderer: <Finger /> },
+            f4: { position: [220, 200], renderer: <Finger /> },
+            f5: { position: [280, 200], renderer: <Finger /> },
           }}
         >
           <StatusBar hidden={true} />
