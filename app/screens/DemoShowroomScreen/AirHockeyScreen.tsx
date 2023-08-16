@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-color-literals */
 /* eslint-disable react-native/no-inline-styles */
 import { colors } from "app/theme"
@@ -8,7 +9,7 @@ import { Screen } from "../../components"
 import { Finger } from "../../gameEngine/renderers"
 import { AirHockeyProps } from "../../navigators/DemoNavigator"
 
-import { MoveFingerPosition } from "../../gameEngine/systems"
+import { MoveFingerOffset, MoveFingerPosition } from "../../gameEngine/systems"
 export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
 
 export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
@@ -26,7 +27,7 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
             flex: 1,
             backgroundColor: "#FFF",
           }}
-          systems={[MoveFingerPosition]}
+          systems={[MoveFingerOffset]}
           entities={{
             f1: { position: [40, 200], renderer: <Finger /> },
             f2: { position: [100, 200], renderer: <Finger /> },

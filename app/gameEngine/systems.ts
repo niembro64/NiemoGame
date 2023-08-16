@@ -5,7 +5,7 @@ import { ScreenStackHeaderRightView } from "react-native-screens"
 
 export const MoveFingerOffset = (entities: { [x: string]: any }, { touches }: any) => {
   touches
-    .filter((t: { type: string }) => t.type === "move" || t.type === "start")
+    .filter((t: { type: string }) => t.type === "move")
     .forEach((t: { id: string | number; delta: { pageX: any; pageY: any } }) => {
       const fingerKey = fingerKeys[t.id]
       const finger = entities[fingerKey]
