@@ -48,6 +48,18 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
     }
   }
 
+  const initialEntities = {
+    f1: { position: [FINGER_RADIUS, 200], renderer: <Finger /> },
+    f2: { position: [FINGER_RADIUS * 3, 200], renderer: <Finger /> },
+    f3: { position: [FINGER_RADIUS * 5, 200], renderer: <Finger /> },
+    f4: { position: [FINGER_RADIUS * 7, 200], renderer: <Finger /> },
+    f5: { position: [FINGER_RADIUS * 9, 200], renderer: <Finger /> },
+    // f6: { position: [FINGER_RADIUS * 11, 200], renderer: <Finger /> },
+    // f7: { position: [FINGER_RADIUS * 13, 200], renderer: <Finger /> },
+  }
+  const [entities, setEntities] = useState(initialEntities)
+  const [deviceId, setDeviceId] = useState<string | null>(null)
+
   const MoveFingerPosition = (entities: { [x: string]: any }, { touches }: any) => {
     let positionsChanged = false
     const newPositions: { [key: string]: [number, number] } = {}
@@ -84,19 +96,6 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
     return entities
   }
 
-  const initialEntities = {
-    f1: { position: [FINGER_RADIUS, 200], renderer: <Finger /> },
-    f2: { position: [FINGER_RADIUS * 3, 200], renderer: <Finger /> },
-    f3: { position: [FINGER_RADIUS * 5, 200], renderer: <Finger /> },
-    f4: { position: [FINGER_RADIUS * 7, 200], renderer: <Finger /> },
-    f5: { position: [FINGER_RADIUS * 9, 200], renderer: <Finger /> },
-    // f6: { position: [FINGER_RADIUS * 11, 200], renderer: <Finger /> },
-    // f7: { position: [FINGER_RADIUS * 13, 200], renderer: <Finger /> },
-  }
-
-  const [entities, setEntities] = useState(initialEntities)
-  const [deviceId, setDeviceId] = useState<string | null>(null)
-
   useEffect(() => {
     ;(async () => {
       const d = await Crypto.digestStringAsync(
@@ -104,6 +103,8 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
         JSON.stringify(Device),
         { encoding: Crypto.CryptoEncoding.HEX },
       )
+
+      console.log("deviceId", d)
 
       setDeviceId(d)
     })()
