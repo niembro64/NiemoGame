@@ -65,12 +65,9 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
     const newPositions: { [key: string]: [number, number] } = {}
 
     touches.forEach((t: { id: string | number; event: { pageX: any; pageY: any } }) => {
-      // console.log("id", t.id)
-
       // @ts-ignore
       const index = Platform.OS === "android" ? t.id : t.id - 1
 
-      // console.log("index", index)
       const fingerKey = fingerKeys[index]
       const finger = entities[fingerKey]
       if (finger && finger.position) {
@@ -90,7 +87,6 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
         positions: locPercent,
       }
 
-      console.log("Emitting positions:", objectToSend)
       socket.emit("send-coordinates", objectToSend)
     }
     return entities
@@ -112,22 +108,18 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
 
   useEffect(() => {
     if (entities === null || deviceId === null) {
-      console.log("entities or deviceId is null")
       return
     }
 
-    ;(async () => {
-      socket.emit("register-device", deviceId)
-
-      socket.on("receive-coordinates", (allCoordinates) => {
-        console.log("allCoordinates", JSON.stringify(allCoordinates, null, 2))
-      })
-    })()
+    socket.emit("register-device", deviceId)
+    socket.on("receive-coordinates", (allCoordinates) => {
+      console.log("allCoordinates", JSON.stringify(allCoordinates, null, 2))
+    })
 
     return () => {
       socket.disconnect()
     }
-  }, [])
+  }, [deviceId])
 
   return (
     <Screen preset="fixed" safeAreaEdges={["top", "bottom"]} contentContainerStyle={{ flex: 1 }}>
