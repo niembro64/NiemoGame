@@ -189,6 +189,8 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
                       // @ts-ignore
                       fingerPositions.map((fingerPosition: [number, number], fIndex: number) => {
                         return (
+
+                          
                           <Text
                             key={fIndex}
                             style={{
