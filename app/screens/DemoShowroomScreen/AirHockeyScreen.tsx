@@ -59,6 +59,8 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
     // f7: { position: [FINGER_RADIUS * 13, 200], renderer: <Finger /> },
   }
 
+  
+
   const [deviceId, setDeviceId] = useState<string | null>(null)
   const [allDevices, setAllDevices] = useState(null)
 
@@ -155,36 +157,38 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
           }}
         >
           {allDevices !== null &&
-            Object.entries(allDevices).map(({ 0: deviceId, 1: device }, index) => {
-              // const newStuff = Object.entries(device).map((device: any, index: number) => {
-              //   return [
-              //     device[0],
-              //     device[1].map((position: any) => [
-              //       position[0] * ScreenWidth,
-              //       position[1] * ScreenHeight,
-              //     ]),
-              //   ]
-              // })
-
-              return (
-                <Text
-                  key={index}
-                  style={{
-                    flex: 1,
-                    width: "100%",
-                    backgroundColor: colors.background,
-                    color: colors.text,
-                    alignContent: "center",
-                    textAlign: "center",
-                    textAlignVertical: "center",
-                    fontSize: 10,
-                    lineHeight: 10,
-                  }}
-                >
-                  {JSON.stringify(device, null, 2)}
-                </Text>
-              )
-            })}
+            Object.entries(allDevices).map(
+              ({ 0: deviceId, 1: fingerPositions }, dIndex: number) => {
+                // fingerPositions.map((fingerPosition: [number, number], index: number) => { })
+                return (
+                  <View key={dIndex}>
+                    {/* @ts-ignore */}
+                    {fingerPositions &&
+                      fingerPositions.length &&
+                      fingerPositions.map((fingerPosition: [number, number], fIndex: number) => {
+                        return (
+                          <Text
+                            key={fIndex}
+                            style={{
+                              flex: 1,
+                              width: "100%",
+                              backgroundColor: colors.background,
+                              color: colors.text,
+                              alignContent: "center",
+                              textAlign: "center",
+                              textAlignVertical: "center",
+                              fontSize: 10,
+                              lineHeight: 10,
+                            }}
+                          >
+                            {JSON.stringify(fingerPosition, null, 2)}
+                          </Text>
+                        )
+                      })}
+                  </View>
+                )
+              },
+            )}
         </View>
 
         <View
