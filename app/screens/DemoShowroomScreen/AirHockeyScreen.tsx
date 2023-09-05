@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 /* eslint-disable react-native/no-single-element-style-arrays */
 /* eslint-disable import/first */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -18,64 +19,70 @@ export const backendIpAddress = "http://192.168.1.9:3000"
 
 const socket = io(backendIpAddress) // Initialize the socket at the module level
 
-class Finger extends PureComponent {
-  render() {
-    // @ts-ignore
-    const x = this.props.position[0] - FINGER_RADIUS / 2
-    // @ts-ignore
-    const y = this.props.position[1] - FINGER_RADIUS / 2
-    return (
-      <View
-        style={[
-          {
-            backgroundColor: "pink",
-            borderColor: "#CCC",
-            borderRadius: FINGER_RADIUS,
-            borderWidth: 4,
-            height: FINGER_RADIUS * 2,
-            position: "absolute",
-            width: FINGER_RADIUS * 2,
-            left: x,
-            top: y,
-          },
-        ]}
-      />
-    )
-  }
-}
-
-const MoveFingerPosition = (entities: { [x: string]: any }, { touches }: any) => {
-  let positionsChanged = false
-  const newPositions: { [key: string]: [number, number] } = {}
-
-  touches.forEach((t: { id: string | number; event: { pageX: any; pageY: any } }) => {
-    // console.log("id", t.id)
-
-    // @ts-ignore
-    const index = Platform.OS === "android" ? t.id : t.id - 1
-
-    // console.log("index", index)
-    const fingerKey = fingerKeys[index]
-    const finger = entities[fingerKey]
-    if (finger && finger.position) {
-      finger.position = [t.event.pageX, t.event.pageY]
-      newPositions[fingerKey] = finger.position
-      positionsChanged = true
+export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
+  class Finger extends PureComponent {
+    render() {
+      // @ts-ignore
+      const x = this.props.position[0] - FINGER_RADIUS / 2
+      // @ts-ignore
+      const y = this.props.position[1] - FINGER_RADIUS / 2
+      return (
+        <View
+          style={[
+            {
+              backgroundColor: "pink",
+              borderColor: "#CCC",
+              borderRadius: FINGER_RADIUS,
+              borderWidth: 4,
+              height: FINGER_RADIUS * 2,
+              position: "absolute",
+              width: FINGER_RADIUS * 2,
+              left: x,
+              top: y,
+            },
+          ]}
+        />
+      )
     }
-  })
+  }
 
-  if (positionsChanged) {
-    const locPercent: number[][] = Object.values(newPositions).map((position) => {
-      return [position[0] / ScreenWidth, position[1] / ScreenHeight]
+  const MoveFingerPosition = (entities: { [x: string]: any }, { touches }: any) => {
+    let positionsChanged = false
+    const newPositions: { [key: string]: [number, number] } = {}
+
+    touches.forEach((t: { id: string | number; event: { pageX: any; pageY: any } }) => {
+      // console.log("id", t.id)
+
+      // @ts-ignore
+      const index = Platform.OS === "android" ? t.id : t.id - 1
+
+      // console.log("index", index)
+      const fingerKey = fingerKeys[index]
+      const finger = entities[fingerKey]
+      if (finger && finger.position) {
+        finger.position = [t.event.pageX, t.event.pageY]
+        newPositions[fingerKey] = finger.position
+        positionsChanged = true
+      }
     })
 
-    console.log("Emitting positions:", locPercent)
-    socket.emit("send-coordinates", locPercent)
-  }
-  return entities
-}
+    if (positionsChanged) {
+      const locPercent: number[][] = Object.values(newPositions).map((position) => {
+        return [position[0] / ScreenWidth, position[1] / ScreenHeight]
+      })
 
-export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
+      const objectToSend = {
+        deviceId: deviceId,
+        positions: locPercent,
+      }
+
+      console.log("Emitting positions:", locPercent)
+      socket.emit("send-coordinates", locPercent)
+    }
+    return entities
+  }
+  const deviceId = Math.floor(Math.random() * 1000000)
+
   const initialEntities = {
     f1: { position: [FINGER_RADIUS, 200], renderer: <Finger /> },
     f2: { position: [FINGER_RADIUS * 3, 200], renderer: <Finger /> },
@@ -94,17 +101,19 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
       return
     }
 
-    socket.on("finger-positions", (positions: { [key: string]: [number, number] }) => {
-      setEntities((prevEntities) => {
-        const updatedEntities = { ...prevEntities }
-        Object.keys(positions).forEach((key) => {
-          if (updatedEntities[key]) {
-            updatedEntities[key].position = positions[key]
-          }
-        })
-        return updatedEntities
-      })
-    })
+    socket.emit("register-device", deviceId)
+
+    // socket.on("finger-positions", (positions: { [key: string]: [number, number] }) => {
+    //   setEntities((prevEntities) => {
+    //     const updatedEntities = { ...prevEntities }
+    //     Object.keys(positions).forEach((key) => {
+    //       if (updatedEntities[key]) {
+    //         updatedEntities[key].position = positions[key]
+    //       }
+    //     })
+    //     return updatedEntities
+    //   })
+    // })
 
     socket.on("receive-coordinates", (allCoordinates) => {
       console.log("allCoordinates", JSON.stringify(allCoordinates, null, 2))
