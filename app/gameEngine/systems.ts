@@ -17,17 +17,17 @@ export const MoveFingerOffset = (entities: { [x: string]: any }, { touches }: an
   return entities
 }
 
-export const MoveFingerPosition = (entities: { [x: string]: any }, { touches }: any) => {
-  touches.forEach((t: { id: string | number; event: { pageX: any; pageY: any } }) => {
-    const fingerKey = fingerKeys[t.id] // Get the corresponding entity key
-    const finger = entities[fingerKey]
-    if (finger && finger.position) {
-      finger.position = [t.event.pageX, t.event.pageY]
-    }
-  })
+// export const MoveFingerPosition = (entities: { [x: string]: any }, { touches }: any) => {
+//   touches.forEach((t: { id: string | number; event: { pageX: any; pageY: any } }) => {
+//     const fingerKey = fingerKeys[t.id] // Get the corresponding entity key
+//     const finger = entities[fingerKey]
+//     if (finger && finger.position) {
+//       finger.position = [t.event.pageX, t.event.pageY]
+//     }
+//   })
 
-  return entities
-}
+//   return entities
+// }
 
 /* eslint-disable prefer-const */
 
