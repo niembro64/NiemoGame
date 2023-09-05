@@ -10,6 +10,7 @@ import { GameEngine } from "react-native-game-engine"
 import { Screen, Text } from "../../components"
 import { AirHockeyProps } from "../../navigators/DemoNavigator"
 import io, { Socket } from "socket.io-client"
+import { ScreenHeight, ScreenWidth } from "react-native-elements/dist/helpers"
 
 export const FINGER_RADIUS = 20
 export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
@@ -64,8 +65,12 @@ const MoveFingerPosition = (entities: { [x: string]: any }, { touches }: any) =>
   })
 
   if (positionsChanged) {
-    console.log("Emitting positions:", newPositions)
-    socket.emit("send-coordinates", newPositions)
+    const locPercent: number[][] = Object.values(newPositions).map((position) => {
+      return [position[0] / ScreenWidth, position[1] / ScreenHeight]
+    })
+
+    console.log("Emitting positions:", locPercent)
+    socket.emit("send-coordinates", locPercent)
   }
   return entities
 }
