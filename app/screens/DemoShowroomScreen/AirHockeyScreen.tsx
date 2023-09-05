@@ -22,12 +22,6 @@ export const backendIpAddress = "http://192.168.1.9:3000"
 const socket = io(backendIpAddress) // Initialize the socket at the module level
 
 export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
-  const deviceId = await Crypto.digestStringAsync(
-    Crypto.CryptoDigestAlgorithm.SHA256,
-    JSON.stringify(Device),
-    { encoding: Crypto.CryptoEncoding.HEX },
-  )
-
   class Finger extends PureComponent {
     render() {
       // @ts-ignore
@@ -101,30 +95,45 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
   }
 
   const [entities, setEntities] = useState(initialEntities)
+  const [deviceId, setDeviceId] = useState<string | null>(null)
 
   useEffect(() => {
-    if (entities === null) {
-      console.log("entities", JSON.stringify(entities, null, 2))
+    ;(async () => {
+      const d = await Crypto.digestStringAsync(
+        Crypto.CryptoDigestAlgorithm.SHA256,
+        JSON.stringify(Device),
+        { encoding: Crypto.CryptoEncoding.HEX },
+      )
+
+      setDeviceId(d)
+    })()
+  }, [])
+
+  useEffect(() => {
+    if (entities === null || deviceId === null) {
+      console.log("entities or deviceId is null")
       return
     }
 
-    socket.emit("register-device", deviceId)
+    ;(async () => {
+      socket.emit("register-device", deviceId)
 
-    // socket.on("finger-positions", (positions: { [key: string]: [number, number] }) => {
-    //   setEntities((prevEntities) => {
-    //     const updatedEntities = { ...prevEntities }
-    //     Object.keys(positions).forEach((key) => {
-    //       if (updatedEntities[key]) {
-    //         updatedEntities[key].position = positions[key]
-    //       }
-    //     })
-    //     return updatedEntities
-    //   })
-    // })
+      // socket.on("finger-positions", (positions: { [key: string]: [number, number] }) => {
+      //   setEntities((prevEntities) => {
+      //     const updatedEntities = { ...prevEntities }
+      //     Object.keys(positions).forEach((key) => {
+      //       if (updatedEntities[key]) {
+      //         updatedEntities[key].position = positions[key]
+      //       }
+      //     })
+      //     return updatedEntities
+      //   })
+      // })
 
-    socket.on("receive-coordinates", (allCoordinates) => {
-      console.log("allCoordinates", JSON.stringify(allCoordinates, null, 2))
-    })
+      socket.on("receive-coordinates", (allCoordinates) => {
+        console.log("allCoordinates", JSON.stringify(allCoordinates, null, 2))
+      })
+    })()
 
     return () => {
       socket.disconnect()
