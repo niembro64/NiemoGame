@@ -6,12 +6,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import { colors } from "app/theme"
 import React, { FC, PureComponent, useEffect, useState } from "react"
+import * as Crypto from "expo-crypto"
 import { Platform, StatusBar, View, ViewStyle } from "react-native"
 import { GameEngine } from "react-native-game-engine"
 import { Screen, Text } from "../../components"
 import { AirHockeyProps } from "../../navigators/DemoNavigator"
 import io, { Socket } from "socket.io-client"
 import { ScreenHeight, ScreenWidth } from "react-native-elements/dist/helpers"
+import * as Device from "expo-device"
 
 export const FINGER_RADIUS = 20
 export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
@@ -20,6 +22,12 @@ export const backendIpAddress = "http://192.168.1.9:3000"
 const socket = io(backendIpAddress) // Initialize the socket at the module level
 
 export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
+  const deviceId = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    JSON.stringify(Device),
+    { encoding: Crypto.CryptoEncoding.HEX },
+  )
+
   class Finger extends PureComponent {
     render() {
       // @ts-ignore
@@ -72,16 +80,15 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
       })
 
       const objectToSend = {
-        deviceId: deviceId,
+        deviceId: Device,
         positions: locPercent,
       }
 
-      console.log("Emitting positions:", locPercent)
-      socket.emit("send-coordinates", locPercent)
+      console.log("Emitting positions:", objectToSend)
+      socket.emit("send-coordinates", objectToSend)
     }
     return entities
   }
-  const deviceId = Math.floor(Math.random() * 1000000)
 
   const initialEntities = {
     f1: { position: [FINGER_RADIUS, 200], renderer: <Finger /> },
