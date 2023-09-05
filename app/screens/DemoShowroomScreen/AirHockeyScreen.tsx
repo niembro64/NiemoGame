@@ -14,6 +14,7 @@ import { AirHockeyProps } from "../../navigators/DemoNavigator"
 import io, { Socket } from "socket.io-client"
 import { ScreenHeight, ScreenWidth } from "react-native-elements/dist/helpers"
 import * as Device from "expo-device"
+import { set } from "date-fns"
 
 export const FINGER_RADIUS = 20
 export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
@@ -59,6 +60,7 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
   }
   const [entities, setEntities] = useState(initialEntities)
   const [deviceId, setDeviceId] = useState<string | null>(null)
+  const [allDevices, setAllDevices] = useState(null)
 
   const MoveFingerPosition = (entities: { [x: string]: any }, { touches }: any) => {
     let positionsChanged = false
@@ -100,8 +102,6 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
         { encoding: Crypto.CryptoEncoding.HEX },
       )
 
-      console.log("deviceId", d)
-
       setDeviceId(d)
     })()
   }, [])
@@ -114,12 +114,22 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
     socket.emit("register-device", deviceId)
     socket.on("receive-coordinates", (allCoordinates) => {
       console.log("allCoordinates", JSON.stringify(allCoordinates, null, 2))
+
+      setAllDevices(Object.entries(allCoordinates))
     })
 
     return () => {
       socket.disconnect()
     }
   }, [deviceId])
+
+  useEffect(() => {
+    if (!allDevices || allDevices.length === 0) {
+      return
+    }
+
+    console.log("allDevices", JSON.stringify(allDevices, null, 2))
+  }, [allDevices])
 
   return (
     <Screen preset="fixed" safeAreaEdges={["top", "bottom"]} contentContainerStyle={{ flex: 1 }}>
@@ -128,33 +138,64 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
           width: "100%",
           height: "100%",
           backgroundColor: colors.background,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <Text
-          style={{
-            width: "100%",
-            height: "10%",
-            backgroundColor: colors.background,
-            color: colors.text,
-            alignContent: "center",
-            textAlign: "center",
-            textAlignVertical: "center",
-            fontSize: 20,
-          }}
-        >
-          asdf
-        </Text>
-        <GameEngine
+        <View
           style={{
             flex: 1,
-            // backgroundColor: "#FFF",
-            backgroundColor: "#000",
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            alignItems: "center",
           }}
-          systems={[MoveFingerPosition]}
-          entities={entities}
         >
-          <StatusBar hidden={true} />
-        </GameEngine>
+          {allDevices !== null &&
+            allDevices.length &&
+            allDevices.map((device: any, index: number) => {
+              return (
+                // <View key={index} />
+                <Text
+                  key={index}
+                  style={{
+                    flex: 1,
+                    width: "100%",
+                    backgroundColor: colors.background,
+                    color: colors.text,
+                    alignContent: "center",
+                    textAlign: "center",
+                    textAlignVertical: "center",
+                    fontSize: 10,
+                  }}
+                >
+                  {JSON.stringify(device, null, 2)}
+                </Text>
+              )
+            })}
+        </View>
+
+        <View
+          style={{
+            flex: 1,
+            width: "100%",
+          }}
+        >
+          <GameEngine
+            style={{
+              flex: 1,
+              // backgroundColor: "#FFF",
+              backgroundColor: "#000",
+            }}
+            systems={[MoveFingerPosition]}
+            entities={entities}
+          >
+            <StatusBar hidden={true} />
+          </GameEngine>
+        </View>
       </View>
     </Screen>
   )
