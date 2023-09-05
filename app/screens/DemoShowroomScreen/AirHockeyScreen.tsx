@@ -49,7 +49,7 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
     }
   }
 
-  const initialEntities = {
+  const entities = {
     f1: { position: [FINGER_RADIUS, 200], renderer: <Finger /> },
     f2: { position: [FINGER_RADIUS * 3, 200], renderer: <Finger /> },
     f3: { position: [FINGER_RADIUS * 5, 200], renderer: <Finger /> },
@@ -58,7 +58,7 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
     // f6: { position: [FINGER_RADIUS * 11, 200], renderer: <Finger /> },
     // f7: { position: [FINGER_RADIUS * 13, 200], renderer: <Finger /> },
   }
-  const [entities, setEntities] = useState(initialEntities)
+
   const [deviceId, setDeviceId] = useState<string | null>(null)
   const [allDevices, setAllDevices] = useState(null)
 
@@ -115,7 +115,7 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
     socket.on("receive-coordinates", (allCoordinates) => {
       console.log("allCoordinates", JSON.stringify(allCoordinates, null, 2))
 
-      setAllDevices(Object.entries(allCoordinates))
+      setAllDevices(allCoordinates)
     })
 
     return () => {
@@ -155,10 +155,18 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
           }}
         >
           {allDevices !== null &&
-            allDevices.length &&
-            allDevices.map((device: any, index: number) => {
+            Object.entries(allDevices).map(({ 0: deviceId, 1: device }, index) => {
+              // const newStuff = Object.entries(device).map((device: any, index: number) => {
+              //   return [
+              //     device[0],
+              //     device[1].map((position: any) => [
+              //       position[0] * ScreenWidth,
+              //       position[1] * ScreenHeight,
+              //     ]),
+              //   ]
+              // })
+
               return (
-                // <View key={index} />
                 <Text
                   key={index}
                   style={{
@@ -170,6 +178,7 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
                     textAlign: "center",
                     textAlignVertical: "center",
                     fontSize: 10,
+                    lineHeight: 10,
                   }}
                 >
                   {JSON.stringify(device, null, 2)}
