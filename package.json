@@ -66,7 +66,8 @@
     "react-native-screens": "~3.20.0",
     "reactotron-mst": "3.1.4",
     "reactotron-react-js": "^3.3.7",
-    "reactotron-react-native": "5.0.3"
+    "reactotron-react-native": "5.0.3",
+    "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -80,6 +81,7 @@
     "@types/jest": "^29.2.1",
     "@types/react": "~18.0.27",
     "@types/react-test-renderer": "^18.0.0",
+    "@types/socket.io-client": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^5.59.0",
     "@typescript-eslint/parser": "^5.59.0",
     "babel-jest": "^29.2.1",

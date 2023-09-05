@@ -1,17 +1,33 @@
+/* eslint-disable import/first */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-color-literals */
 /* eslint-disable react-native/no-inline-styles */
 import { colors } from "app/theme"
-import React, { FC } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { StatusBar, View, ViewStyle } from "react-native"
 import { GameEngine } from "react-native-game-engine"
 import { Screen } from "../../components"
 import { Finger } from "../../gameEngine/renderers"
 import { AirHockeyProps } from "../../navigators/DemoNavigator"
+import io, { Socket } from "socket.io-client"
 
 import { MoveFingerPosition } from "../../gameEngine/systems"
 export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
 
+export const backendIpAddress = "http://192.168.1.5:3000"
+
 export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
+  const [socket, setSocket] = useState<Socket | null>(null)
+
+  useEffect(() => {
+    const socketInstance = io(backendIpAddress)
+    setSocket(socketInstance)
+
+    return () => {
+      socketInstance.disconnect()
+    }
+  }, [])
+
   return (
     <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$screenContainer}>
       <View
