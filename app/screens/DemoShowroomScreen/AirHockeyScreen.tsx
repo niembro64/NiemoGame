@@ -18,7 +18,8 @@ import { set } from "date-fns"
 
 export const FINGER_RADIUS = 20
 export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
-export const backendIpAddress = "http://192.168.1.9:3000"
+export const backendIpAddress = "http://192.168.86.25:3000" // WORK : MAC OS
+// export const backendIpAddress = "http://192.168.1.9:3000" // HOME : BLACK BETTY
 
 const socket = io(backendIpAddress) // Initialize the socket at the module level
 
