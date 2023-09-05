@@ -132,7 +132,7 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
   }, [allDevices])
 
   return (
-    <Screen preset="fixed" safeAreaEdges={["top", "bottom"]} contentContainerStyle={{ flex: 1 }}>
+    <Screen preset="fixed" safeAreaEdges={["bottom"]} contentContainerStyle={{ flex: 1 }}>
       <View
         style={{
           width: "100%",
@@ -144,6 +144,19 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
           alignItems: "center",
         }}
       >
+        <GameEngine
+          style={{
+            flex: 1,
+            width: "100%",
+            // backgroundColor: "#FFF",
+            backgroundColor: "#000",
+          }}
+          systems={[MoveFingerPosition]}
+          entities={entities}
+        >
+          <StatusBar hidden={true} />
+        </GameEngine>
+
         <View
           style={{
             flex: 1,
@@ -189,25 +202,6 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
                 )
               },
             )}
-        </View>
-
-        <View
-          style={{
-            flex: 1,
-            width: "100%",
-          }}
-        >
-          <GameEngine
-            style={{
-              flex: 1,
-              // backgroundColor: "#FFF",
-              backgroundColor: "#000",
-            }}
-            systems={[MoveFingerPosition]}
-            entities={entities}
-          >
-            <StatusBar hidden={true} />
-          </GameEngine>
         </View>
       </View>
     </Screen>
