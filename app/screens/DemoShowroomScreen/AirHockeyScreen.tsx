@@ -50,9 +50,10 @@ const MoveFingerPosition = (entities: { [x: string]: any }, { touches }: any) =>
   touches.forEach((t: { id: string | number; event: { pageX: any; pageY: any } }) => {
     // console.log("id", t.id)
 
+    // @ts-ignore
     const index = Platform.OS === "android" ? t.id : t.id - 1
 
-    console.log("index", index)
+    // console.log("index", index)
     const fingerKey = fingerKeys[index]
     const finger = entities[fingerKey]
     if (finger && finger.position) {
@@ -63,7 +64,7 @@ const MoveFingerPosition = (entities: { [x: string]: any }, { touches }: any) =>
   })
 
   if (positionsChanged) {
-    // console.log("Emitting positions:", newPositions)
+    console.log("Emitting positions:", newPositions)
     socket.emit("finger-positions", newPositions)
   }
   return entities
