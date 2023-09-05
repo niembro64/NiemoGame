@@ -86,7 +86,7 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
       })
 
       const objectToSend = {
-        deviceId: Device,
+        deviceId: deviceId,
         positions: locPercent,
       }
 
@@ -118,18 +118,6 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
 
     ;(async () => {
       socket.emit("register-device", deviceId)
-
-      // socket.on("finger-positions", (positions: { [key: string]: [number, number] }) => {
-      //   setEntities((prevEntities) => {
-      //     const updatedEntities = { ...prevEntities }
-      //     Object.keys(positions).forEach((key) => {
-      //       if (updatedEntities[key]) {
-      //         updatedEntities[key].position = positions[key]
-      //       }
-      //     })
-      //     return updatedEntities
-      //   })
-      // })
 
       socket.on("receive-coordinates", (allCoordinates) => {
         console.log("allCoordinates", JSON.stringify(allCoordinates, null, 2))
