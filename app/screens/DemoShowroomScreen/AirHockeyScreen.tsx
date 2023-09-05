@@ -172,7 +172,16 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
               ({ 0: deviceId, 1: fingerPositions }, dIndex: number) => {
                 // fingerPositions.map((fingerPosition: [number, number], index: number) => { })
                 return (
-                  <View key={dIndex}>
+                  <View
+                    style={{
+                      flex: 1,
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    key={dIndex}
+                  >
                     {/* @ts-ignore */}
                     {fingerPositions &&
                       // @ts-ignore
@@ -183,11 +192,10 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
                           <Text
                             key={fIndex}
                             style={{
-                              flex: 1,
+                              // flex: 1,
                               width: "100%",
                               backgroundColor: colors.background,
                               color: colors.text,
-                              alignContent: "center",
                               textAlign: "center",
                               textAlignVertical: "center",
                               fontSize: 10,
