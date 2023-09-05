@@ -65,7 +65,7 @@ const MoveFingerPosition = (entities: { [x: string]: any }, { touches }: any) =>
 
   if (positionsChanged) {
     console.log("Emitting positions:", newPositions)
-    socket.emit("finger-positions", newPositions)
+    socket.emit("send-coordinates", newPositions)
   }
   return entities
 }
@@ -84,6 +84,11 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
   const [entities, setEntities] = useState(initialEntities)
 
   useEffect(() => {
+    if (entities === null) {
+      console.log("entities", JSON.stringify(entities, null, 2))
+      return
+    }
+
     socket.on("finger-positions", (positions: { [key: string]: [number, number] }) => {
       setEntities((prevEntities) => {
         const updatedEntities = { ...prevEntities }
@@ -103,7 +108,7 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
     return () => {
       socket.disconnect()
     }
-  }, [entities])
+  }, [])
 
   return (
     <Screen preset="fixed" safeAreaEdges={["top", "bottom"]} contentContainerStyle={{ flex: 1 }}>
