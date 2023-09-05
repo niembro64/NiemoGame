@@ -59,8 +59,6 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
     // f7: { position: [FINGER_RADIUS * 13, 200], renderer: <Finger /> },
   }
 
-  
-
   const [deviceId, setDeviceId] = useState<string | null>(null)
   const [allDevices, setAllDevices] = useState(null)
 
@@ -164,7 +162,9 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
                   <View key={dIndex}>
                     {/* @ts-ignore */}
                     {fingerPositions &&
+                      // @ts-ignore
                       fingerPositions.length &&
+                      // @ts-ignore
                       fingerPositions.map((fingerPosition: [number, number], fIndex: number) => {
                         return (
                           <Text
