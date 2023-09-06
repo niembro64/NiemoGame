@@ -108,29 +108,62 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
     })()
   }, [])
 
+  const [latency, setLatency] = useState<number | null>(null)
+  const [latencyHistory, setLatencyHistory] = useState<number[]>([])
+  const [averageLatency, setAverageLatency] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (latency === null) {
+      return
+    }
+
+    const newLatencyHistory = [...latencyHistory, latency]
+    setLatencyHistory(newLatencyHistory)
+
+    if (newLatencyHistory.length > 10) {
+      const averageLatency = newLatencyHistory.reduce((a, b) => a + b, 0) / newLatencyHistory.length
+      console.log("Average Latency is:", averageLatency, "ms")
+      setAverageLatency(averageLatency)
+    }
+  }, [latency])
+
+  let start = Date.now()
   useEffect(() => {
     if (entities === null || deviceId === null) {
       return
     }
 
     socket.emit("register-device", deviceId)
-    socket.on("receive-coordinates", (allCoordinates) => {
-      console.log("allCoordinates", JSON.stringify(allCoordinates, null, 2))
 
+    socket.on("receive-coordinates", (allCoordinates) => {
       setAllDevices(allCoordinates)
     })
 
+    const pingInterval = setInterval(() => {
+      start = Date.now()
+      // console.log("ping", start)
+      socket.emit("ping")
+    }, 500)
+
+    socket.on("pong", () => {
+      const latency = Date.now() - start
+      console.log("Latency is:", latency, "ms")
+      setLatency(latency)
+    })
+
     return () => {
+      clearInterval(pingInterval) // Clear the interval when the component is unmounted
+      socket.off("pong") // Remove the pong event listener
       socket.disconnect()
     }
   }, [deviceId])
 
   useEffect(() => {
     if (!allDevices || allDevices.length === 0) {
-      return
+      // return
     }
 
-    console.log("allDevices", JSON.stringify(allDevices, null, 2))
+    // console.log("allDevices", JSON.stringify(allDevices, null, 2))
   }, [allDevices])
 
   return (
@@ -158,7 +191,44 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
         >
           <StatusBar hidden={true} />
         </GameEngine>
-
+        <View
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+            backgroundColor: "purple",
+          }}
+        >
+          <Text
+            preset="bold"
+            style={{
+              color: "white",
+            }}
+          >
+            {"Latency " + latency + "ms"}
+          </Text>
+        </View>
+        <View
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+            backgroundColor: "purple",
+          }}
+        >
+          <Text
+            preset="bold"
+            style={{
+              color: "white",
+            }}
+          >
+            {"Average Latency " + ~~(averageLatency) + "ms"}
+          </Text>
+        </View>
         <View
           style={{
             flex: 1,
@@ -191,8 +261,6 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
                       // @ts-ignore
                       fingerPositions.map((fingerPosition: [number, number], fIndex: number) => {
                         return (
-
-                          
                           <Text
                             key={fIndex}
                             style={{
