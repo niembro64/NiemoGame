@@ -113,6 +113,7 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
   const [latencyAverage, setLatencyAverage] = useState<number | null>(null)
   const [latencyMin, setLatencyMin] = useState<number>(Infinity)
   const [latencyMax, setLatencyMax] = useState<number>(0)
+  const [latencyMedian, setLatencyMedian] = useState<number>(0)
 
   useEffect(() => {
     if (latency === null) {
@@ -134,6 +135,12 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
 
     if (latency > latencyMax) {
       setLatencyMax(latency)
+    }
+
+    if (newLatencyHistory.length > 10) {
+      const medianLatency = newLatencyHistory.sort()[Math.floor(newLatencyHistory.length / 2)]
+      console.log("Median Latency is:", medianLatency, "ms")
+      setLatencyMedian(medianLatency)
     }
   }, [latency])
 
@@ -242,6 +249,14 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
             }}
           >
             {"Max " + ~~latencyMax + "ms"}
+          </Text>
+          <Text
+            preset="bold"
+            style={{
+              color: "white",
+            }}
+          >
+            {"Median " + ~~latencyMedian + "ms"}
           </Text>
         </View>
 
