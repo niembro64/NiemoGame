@@ -110,7 +110,9 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
 
   const [latency, setLatency] = useState<number | null>(null)
   const [latencyHistory, setLatencyHistory] = useState<number[]>([])
-  const [averageLatency, setAverageLatency] = useState<number | null>(null)
+  const [latencyAverage, setLatencyAverage] = useState<number | null>(null)
+  const [latencyMin, setLatencyMin] = useState<number>(Infinity)
+  const [latencyMax, setLatencyMax] = useState<number>(0)
 
   useEffect(() => {
     if (latency === null) {
@@ -123,7 +125,15 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
     if (newLatencyHistory.length > 10) {
       const averageLatency = newLatencyHistory.reduce((a, b) => a + b, 0) / newLatencyHistory.length
       console.log("Average Latency is:", averageLatency, "ms")
-      setAverageLatency(averageLatency)
+      setLatencyAverage(averageLatency)
+    }
+
+    if (latency < latencyMin) {
+      setLatencyMin(latency)
+    }
+
+    if (latency > latencyMax) {
+      setLatencyMax(latency)
     }
   }, [latency])
 
@@ -195,7 +205,7 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
           style={{
             width: "100%",
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "column",
             justifyContent: "space-evenly",
             alignItems: "center",
             backgroundColor: "purple",
@@ -209,26 +219,32 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
           >
             {"Latency " + latency + "ms"}
           </Text>
-        </View>
-        <View
-          style={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-evenly",
-            alignItems: "center",
-            backgroundColor: "purple",
-          }}
-        >
           <Text
             preset="bold"
             style={{
               color: "white",
             }}
           >
-            {"Average Latency " + ~~(averageLatency) + "ms"}
+            {"Average " + ~~latencyAverage + "ms"}
+          </Text>
+          <Text
+            preset="bold"
+            style={{
+              color: "white",
+            }}
+          >
+            {"Min " + ~~latencyMin + "ms"}
+          </Text>
+          <Text
+            preset="bold"
+            style={{
+              color: "white",
+            }}
+          >
+            {"Max " + ~~latencyMax + "ms"}
           </Text>
         </View>
+
         <View
           style={{
             flex: 1,
