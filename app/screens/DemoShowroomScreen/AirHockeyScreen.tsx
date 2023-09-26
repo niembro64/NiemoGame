@@ -15,8 +15,11 @@ import io, { Socket } from "socket.io-client"
 import { ScreenHeight, ScreenWidth } from "react-native-elements/dist/helpers"
 import * as Device from "expo-device"
 import { set } from "date-fns"
+import { MoveMyDots } from "app/gameEngine/systems"
 
 const printLatency = false
+
+export let allDevices = []
 
 export const FINGER_RADIUS = 20
 export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
@@ -37,7 +40,60 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
         <View
           style={[
             {
-              backgroundColor: "pink",
+              // @ts-ignore
+              backgroundColor: this.props.color || "blue",
+              borderColor: "#CCC",
+              borderRadius: FINGER_RADIUS,
+              borderWidth: 4,
+              height: FINGER_RADIUS * 2,
+              position: "absolute",
+              width: FINGER_RADIUS * 2,
+              left: x,
+              top: y,
+            },
+          ]}
+        />
+      )
+    }
+  }
+  class FingerMe extends PureComponent {
+    render() {
+      // @ts-ignore
+      const x = this.props.position[0] - FINGER_RADIUS / 2
+      // @ts-ignore
+      const y = this.props.position[1] - FINGER_RADIUS / 2
+      return (
+        <View
+          style={[
+            {
+              // @ts-ignore
+              backgroundColor: this.props.color || "green",
+              borderColor: "#CCC",
+              borderRadius: FINGER_RADIUS,
+              borderWidth: 4,
+              height: FINGER_RADIUS * 2,
+              position: "absolute",
+              width: FINGER_RADIUS * 2,
+              left: x,
+              top: y,
+            },
+          ]}
+        />
+      )
+    }
+  }
+  class FingerEnemy extends PureComponent {
+    render() {
+      // @ts-ignore
+      const x = this.props.position[0] - FINGER_RADIUS / 2
+      // @ts-ignore
+      const y = this.props.position[1] - FINGER_RADIUS / 2
+      return (
+        <View
+          style={[
+            {
+              // @ts-ignore
+              backgroundColor: this.props.color || "red",
               borderColor: "#CCC",
               borderRadius: FINGER_RADIUS,
               borderWidth: 4,
@@ -59,12 +115,22 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
     f3: { position: [FINGER_RADIUS * 5, 200], renderer: <Finger /> },
     f4: { position: [FINGER_RADIUS * 7, 200], renderer: <Finger /> },
     f5: { position: [FINGER_RADIUS * 9, 200], renderer: <Finger /> },
-    // f6: { position: [FINGER_RADIUS * 11, 200], renderer: <Finger /> },
-    // f7: { position: [FINGER_RADIUS * 13, 200], renderer: <Finger /> },
+
+    me1: { position: [FINGER_RADIUS, 200], renderer: <FingerMe /> },
+    me2: { position: [FINGER_RADIUS * 3, 200], renderer: <FingerMe /> },
+    me3: { position: [FINGER_RADIUS * 5, 200], renderer: <FingerMe /> },
+    me4: { position: [FINGER_RADIUS * 7, 200], renderer: <FingerMe /> },
+    me5: { position: [FINGER_RADIUS * 9, 200], renderer: <FingerMe /> },
+
+    enemy1: { position: [FINGER_RADIUS, 200], renderer: <FingerEnemy /> },
+    enemy2: { position: [FINGER_RADIUS * 3, 200], renderer: <FingerEnemy /> },
+    enemy3: { position: [FINGER_RADIUS * 5, 200], renderer: <FingerEnemy /> },
+    enemy4: { position: [FINGER_RADIUS * 7, 200], renderer: <FingerEnemy /> },
+    enemy5: { position: [FINGER_RADIUS * 9, 200], renderer: <FingerEnemy /> },
   }
 
   const [deviceId, setDeviceId] = useState<string | null>(null)
-  const [allDevices, setAllDevices] = useState(null)
+  // const [allDevices, setAllDevices] = useState(null)
 
   const MoveFingerPosition = (entities: { [x: string]: any }, { touches }: any) => {
     let positionsChanged = false
@@ -84,8 +150,8 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
     })
 
     if (positionsChanged) {
-      const locPercent: number[][] = Object.values(newPositions).map((position) => {
-        return [position[0] / ScreenWidth, position[1] / ScreenHeight]
+      const locPercent: { x: number; y: number } = Object.values(newPositions).map((position) => {
+        return { x: position[0] / ScreenWidth, y: position[1] / ScreenHeight }
       })
 
       const positions = Object.values(newPositions)
@@ -160,7 +226,8 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
     socket.emit("register-device", deviceId)
 
     socket.on("receive-coordinates", (allCoordinates) => {
-      setAllDevices(allCoordinates)
+      // setAllDevices(allCoordinates)
+      allDevices = allCoordinates
     })
 
     const pingInterval = setInterval(() => {
@@ -171,7 +238,7 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
 
     socket.on("pong", () => {
       const latency = Date.now() - start
-     printLatency && console.log("Latency is:", latency, "ms")
+      printLatency && console.log("Latency is:", latency, "ms")
       printLatency && setLatency(latency)
     })
 
@@ -210,117 +277,11 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
             // backgroundColor: "#FFF",
             backgroundColor: "#000",
           }}
-          systems={[MoveFingerPosition]}
+          systems={[MoveFingerPosition, MoveMyDots]}
           entities={entities}
         >
-          <StatusBar hidden={true} />
+          {/* <StatusBar hidden={true} /> */}
         </GameEngine>
-        <View
-          style={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-evenly",
-            alignItems: "center",
-            backgroundColor: "purple",
-          }}
-        >
-          <Text
-            preset="bold"
-            style={{
-              color: "white",
-            }}
-          >
-            {"Latency " + latency + "ms"}
-          </Text>
-          <Text
-            preset="bold"
-            style={{
-              color: "white",
-            }}
-          >
-            {"Average " + ~~latencyAverage + "ms"}
-          </Text>
-          <Text
-            preset="bold"
-            style={{
-              color: "white",
-            }}
-          >
-            {"Min " + ~~latencyMin + "ms"}
-          </Text>
-          <Text
-            preset="bold"
-            style={{
-              color: "white",
-            }}
-          >
-            {"Max " + ~~latencyMax + "ms"}
-          </Text>
-          <Text
-            preset="bold"
-            style={{
-              color: "white",
-            }}
-          >
-            {"Median " + ~~latencyMedian + "ms"}
-          </Text>
-        </View>
-
-        <View
-          style={{
-            flex: 1,
-            width: "100%",
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-evenly",
-            alignItems: "center",
-          }}
-        >
-          {allDevices !== null &&
-            Object.entries(allDevices).map(
-              ({ 0: deviceId, 1: fingerPositions }, dIndex: number) => {
-                // fingerPositions.map((fingerPosition: [number, number], index: number) => { })
-                return (
-                  <View
-                    style={{
-                      flex: 1,
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                    key={dIndex}
-                  >
-                    {/* @ts-ignore */}
-                    {fingerPositions &&
-                      // @ts-ignore
-                      fingerPositions.length &&
-                      // @ts-ignore
-                      fingerPositions.map((fingerPosition: [number, number], fIndex: number) => {
-                        return (
-                          <Text
-                            key={fIndex}
-                            style={{
-                              // flex: 1,
-                              width: "100%",
-                              backgroundColor: colors.background,
-                              color: colors.text,
-                              textAlign: "center",
-                              textAlignVertical: "center",
-                              fontSize: 10,
-                              lineHeight: 10,
-                            }}
-                          >
-                            {JSON.stringify(fingerPosition, null, 2)}
-                          </Text>
-                        )
-                      })}
-                  </View>
-                )
-              },
-            )}
-        </View>
       </View>
     </Screen>
   )

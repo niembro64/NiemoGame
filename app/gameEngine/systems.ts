@@ -1,4 +1,5 @@
-import { fingerKeys } from "app/screens/DemoShowroomScreen/AirHockeyScreen"
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { allDevices, fingerKeys } from "app/screens/DemoShowroomScreen/AirHockeyScreen"
 import { FINGER_RADIUS, PUCK_RADIUS } from "./renderers"
 import { ScreenWidth } from "react-native-elements/dist/helpers"
 import { ScreenStackHeaderRightView } from "react-native-screens"
@@ -68,6 +69,24 @@ export const MoveFingerAndPuck = (entities: { [x: string]: any; puck: any }, { t
   if (puck.position[0] <= 0 || puck.position[0] >= ScreenWidth) puck.velocity.x = -puck.velocity.x
   if (puck.position[1] <= 0 || puck.position[1] >= ScreenStackHeaderRightView)
     puck.velocity.y = -puck.velocity.y
+
+  return entities
+}
+
+export const MoveMyDots = (entities: { [x: string]: any; puck: any }, { touches }: any) => {
+  entities.me1.position[0] += 1
+
+  // console.log("entities.me1.position[0]", entities.me1.position[0])
+
+  // console.log("entities", allDevices)
+
+  Object.keys(allDevices).forEach((key) => {
+    console.log("allDevices[key]", allDevices[key])
+  })
+
+  // allDevices.forEach((device: { id: string; position: number[] }) => {
+  //   console.log("device", device)
+  // })
 
   return entities
 }
