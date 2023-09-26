@@ -16,11 +16,13 @@ import { ScreenHeight, ScreenWidth } from "react-native-elements/dist/helpers"
 import * as Device from "expo-device"
 import { set } from "date-fns"
 
+const printLatency = false
+
 export const FINGER_RADIUS = 20
 export const fingerKeys = ["f1", "f2", "f3", "f4", "f5", "f6"]
-export const backendIpAddress = "http://54.81.50.118:3000" // AWS
+// export const backendIpAddress = "http://54.81.50.118:3000" // AWS
 // export const backendIpAddress = "http://192.168.86.25:3000" // WORK : MAC OS
-// export const backendIpAddress = "http://192.168.1.9:3000" // HOME : BLACK BETTY
+export const backendIpAddress = "http://192.168.1.9:3000" // HOME : BLACK BETTY
 
 const socket = io(backendIpAddress) // Initialize the socket at the module level
 
@@ -86,6 +88,10 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
         return [position[0] / ScreenWidth, position[1] / ScreenHeight]
       })
 
+      const positions = Object.values(newPositions)
+
+      console.log("positions", positions)
+
       const objectToSend = {
         deviceId: deviceId,
         positions: locPercent,
@@ -121,26 +127,27 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
     }
 
     const newLatencyHistory = [...latencyHistory, latency]
-    setLatencyHistory(newLatencyHistory)
+
+    printLatency && setLatencyHistory(newLatencyHistory)
 
     if (newLatencyHistory.length > 10) {
       const averageLatency = newLatencyHistory.reduce((a, b) => a + b, 0) / newLatencyHistory.length
       console.log("Average Latency is:", averageLatency, "ms")
-      setLatencyAverage(averageLatency)
+      printLatency && setLatencyAverage(averageLatency)
     }
 
     if (latency < latencyMin) {
-      setLatencyMin(latency)
+      printLatency && setLatencyMin(latency)
     }
 
     if (latency > latencyMax) {
-      setLatencyMax(latency)
+      printLatency && setLatencyMax(latency)
     }
 
     if (newLatencyHistory.length > 10) {
       const medianLatency = newLatencyHistory.sort()[Math.floor(newLatencyHistory.length / 2)]
       console.log("Median Latency is:", medianLatency, "ms")
-      setLatencyMedian(medianLatency)
+      printLatency && setLatencyMedian(medianLatency)
     }
   }, [latency])
 
@@ -164,8 +171,8 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
 
     socket.on("pong", () => {
       const latency = Date.now() - start
-      console.log("Latency is:", latency, "ms")
-      setLatency(latency)
+     printLatency && console.log("Latency is:", latency, "ms")
+      printLatency && setLatency(latency)
     })
 
     return () => {
