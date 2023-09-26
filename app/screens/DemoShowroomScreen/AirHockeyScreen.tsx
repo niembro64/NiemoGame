@@ -150,13 +150,19 @@ export const AirHockeyScreen: FC<AirHockeyProps<"AirHockey">> = (_props) => {
     })
 
     if (positionsChanged) {
-      const locPercent: { x: number; y: number } = Object.values(newPositions).map((position) => {
-        return { x: position[0] / ScreenWidth, y: position[1] / ScreenHeight }
+      const locPercent: number[][] = Object.values(newPositions).map((position) => {
+        return [position[0] / ScreenWidth, position[1] / ScreenHeight]
       })
+
+      //  const locPercent: { x: number; y: number }[] = Object.values(newPositions).map(
+      //    (position) => {
+      //      return { x: position[0] / ScreenWidth, y: position[1] / ScreenHeight }
+      //    },
+      //  )
 
       const positions = Object.values(newPositions)
 
-      console.log("positions", positions)
+      // console.log("positions", positions)
 
       const objectToSend = {
         deviceId: deviceId,

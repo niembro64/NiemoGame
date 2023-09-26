@@ -78,15 +78,26 @@ export const MoveMyDots = (entities: { [x: string]: any; puck: any }, { touches 
 
   // console.log("entities.me1.position[0]", entities.me1.position[0])
 
-  // console.log("entities", allDevices)
+  // console.log("allDevices", allDevices)
 
-  Object.keys(allDevices).forEach((key) => {
-    console.log("allDevices[key]", allDevices[key])
+  const keys = Object.keys(allDevices).map((key) => {
+    return allDevices[key]
   })
 
-  // allDevices.forEach((device: { id: string; position: number[] }) => {
-  //   console.log("device", device)
-  // })
+  const values = Object.values(allDevices).map((value) => {
+    return value
+  })
+
+  keys.forEach((key) => {
+    // if (!Array.isArray(allDevices[key])) {
+    //   return entities
+    // }
+    // allDevices[key].forEach((x) => {
+    //   console.log("x", x)
+    // })
+
+    console.log(key)
+  })
 
   return entities
 }
